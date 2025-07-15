@@ -24,7 +24,7 @@ import sys
 from functools import partial
 from optparse import OptionParser
 
-import commands
+import subprocess
 from exceptions import GrokCLIError
 import __version__
 
