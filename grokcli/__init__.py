@@ -31,19 +31,18 @@ import __version__
 
 availableCommands = __import__("grokcli.commands", globals(), locals(), ['*'])
 
-commands = dict([
+available_command_handlers = dict([
     (cmd, getattr(availableCommands, cmd))
     for cmd in availableCommands.__all__
-  ])
+])
 
 usage = "%prog [command] [options]\n\n" \
         "Available commands:\n"
 
-for command in sorted(commands):
+for command in sorted(available_command_handlers):
   usage += "\n    " + command
 
 parser = OptionParser(usage=usage, version=__version__.__version__)
-
 
 def handle(options, args):
   parser.print_help()
@@ -60,7 +59,7 @@ def main():
     print(__version__.__version__)
     sys.exit()
 
-  submodule = commands.get(subcommand, sys.modules[__name__])
+submodule = available_command_handlers.get(subcommand, sys.modules[__name__])
 
   (options, args) = submodule.parser.parse_args(sys.argv[1:])
 
